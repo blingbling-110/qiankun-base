@@ -1,25 +1,67 @@
-import logo from './logo.svg';
 import './App.css';
+import { Layout, Menu } from 'antd';
+import {
+  DesktopOutlined,
+  PieChartOutlined,
+} from '@ant-design/icons';
+import { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+const { Header, Content, Footer, Sider } = Layout;
+
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
+
+const items = [
+  getItem(<Link to={'/app-vue'}>Vue应用</Link>, '1', <PieChartOutlined />),
+  getItem(<Link to={'/app-react'}>React应用</Link>, '2', <DesktopOutlined />),
+];
 
 function App() {
+  const [collapsed, setCollapsed] = useState(false)
+  const onCollapse = useCallback(collapsed => {
+    setCollapsed(collapsed);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout
+      style={{
+        minHeight: '100vh',
+      }}
+    >
+      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+        <div className="logo" />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      </Sider>
+      <Layout className="site-layout">
+        <Header
+          className="site-layout-background"
+          style={{
+            padding: 0,
+          }}
+        />
+        <Content
+          style={{
+            margin: '16px',
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <div id="container" className="site-layout-background" style={{ minHeight: 360 }}></div>
+        </Content>
+        <Footer
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          Hello qiankun ©2022 Created by qinzijun
+        </Footer>
+      </Layout>
+    </Layout>
+  )
 }
 
 export default App;
