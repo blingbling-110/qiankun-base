@@ -5,7 +5,7 @@ import {
   PieChartOutlined,
 } from '@ant-design/icons';
 import { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -18,8 +18,8 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem(<Link to={'/app-vue'}>Vue应用</Link>, '1', <PieChartOutlined />),
-  getItem(<Link to={'/app-react'}>React应用</Link>, '2', <DesktopOutlined />),
+  getItem(<NavLink to={'/app-vue'}>Vue应用</NavLink>, '1', <PieChartOutlined />),
+  getItem(<NavLink to={'/app-react'}>React应用</NavLink>, '2', <DesktopOutlined />),
 ];
 
 function App() {
@@ -27,6 +27,16 @@ function App() {
   const onCollapse = useCallback(collapsed => {
     setCollapsed(collapsed);
   }, []);
+  const location = useLocation()
+  const getActKey = useCallback(pathname => {
+    const res = []
+    if (pathname.includes('vue')) {
+      res.push('1')
+    } else if (pathname.includes('react')) {
+      res.push('2')
+    }
+    return res
+  }, [])
 
   return (
     <Layout
@@ -36,7 +46,7 @@ function App() {
     >
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+        <Menu theme="dark" mode="inline" items={items} selectedKeys={getActKey(location.pathname)} />
       </Sider>
       <Layout className="site-layout">
         <Header
@@ -50,7 +60,9 @@ function App() {
             margin: '16px',
           }}
         >
-          <div id="container" className="site-layout-background" style={{ minHeight: 360 }}></div>
+          <div id="container" className="site-layout-background" style={{ minHeight: 360 }}>
+            <div className='default'>从侧边栏中选择一个子应用</div>
+          </div>
         </Content>
         <Footer
           style={{

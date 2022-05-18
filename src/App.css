@@ -7,3 +7,10 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
+
+.site-layout-background>.default {
+  text-align: center;
+  font-size: 16px;
+  color: darkblue;
+  padding-top: 167px;
+}
